@@ -15,13 +15,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Gcantroller GLR = Get.put(Gcantroller());
-  TextEditingController id = TextEditingController();
+  // bool isclick = false;
+  // Icon iconcl = Icon(
+  //   Icons.check_circle_outline,
+  //   size: 50,
+  // );
   TextEditingController task = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Note Keeper"),
+          backgroundColor: Colors.green,
+        ),
         body: StreamBuilder(
           stream: GLR.readData(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -35,41 +43,47 @@ class _HomePageState extends State<HomePage> {
 
               for (var x in data.children) {
                 ModalNote N1 = ModalNote(
-                    id: x.child("id").value.toString(),
-                    task: x.child("task").value.toString(),
-                    key: x.key);
+                  task: x
+                      .child("task")
+                      .value
+                      .toString(),
+                  key: x.key,
+                );
                 l1.add(N1);
               }
               return ListView.builder(
                   itemCount: l1.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      leading: GLR.Tick(),
                       title: Text("${l1[index].task}"),
-                      trailing: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              id = TextEditingController(text: l1[index].id);
-                              task =
-                                  TextEditingController(text: l1[index].task);
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                task =
+                                    TextEditingController(text: l1[index].task);
 
-                              // DialogBox(l1[index].key.toString());
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.green,
+                                DialogBox(l1[index].key.toString());
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.green,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              GLR.Delete(l1[index].key);
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
+                            IconButton(
+                              onPressed: () {
+                                GLR.Delete(l1[index].key);
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   });
@@ -78,11 +92,67 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-
+          backgroundColor: Colors.green,
+          onPressed: () {
+            task = TextEditingController();
+            DialogBox(null);
+          },
+          child: Icon(Icons.add),
         ),
       ),
     );
   }
 
-  void Tick() {}
+  void DialogBox(String? key) {
+    Get.defaultDialog(
+      content: Container(
+        child: Column(
+          children: [
+            TextField(
+              controller: task,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "task",
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                GLR.AddData(task: task.text, key: key);
+              },
+              child: Text("Create"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // void Tick() {
+  //   IconButton(onPressed: () {
+  //
+  //   }, icon: Icon(Icons.check_circle_outline),);
+  // }
+
+  // void Tick() async {
+  //   if (isclick == false) {
+  //     setState(() {
+  //       isclick = true;
+  //       iconcl = Icon(
+  //         Icons.check_circle_outline,
+  //         size: 50,
+  //       );
+  //     });
+  //   } else {
+  //     setState(() {
+  //       isclick = false;
+  //       iconcl = Icon(
+  //         Icons.check_circle,
+  //         size: 50,
+  //       );
+  //     });
+  //   }
+  // }
 }
