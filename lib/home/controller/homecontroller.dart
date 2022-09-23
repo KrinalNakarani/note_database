@@ -25,28 +25,11 @@ class Gcantroller extends GetxController {
     var FDBref = firebaseDatabase.ref();
     FDBref.child("Task").child(key!).remove();
   }
-  void Tick() async {
+
+  Future<Icon> tick() async {
     bool isclick = false;
-    Icon iconcl = Icon(
-      Icons.check_circle_outline,
-      size: 50,
-    );
-    if (isclick == false) {
-
-        isclick = true;
-        iconcl = Icon(
-          Icons.check_circle_outline,
-          size: 50,
-        );
-
-    } else {
-
-        isclick = false;
-        iconcl = Icon(
-          Icons.check_circle,
-          size: 50,
-        );
-    }
+    var abc = isclick ? Icon(Icons.check_circle) : Icon(Icons.check_circle_outline);
+    return abc;
   }
 }
 

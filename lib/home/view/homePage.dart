@@ -15,11 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Gcantroller GLR = Get.put(Gcantroller());
-  // bool isclick = false;
-  // Icon iconcl = Icon(
-  //   Icons.check_circle_outline,
-  //   size: 50,
-  // );
+  bool isclick = false;
+  Icon iconcl = Icon(
+    Icons.check_circle_outline,
+    size: 50,
+  );
   TextEditingController task = TextEditingController();
 
   @override
@@ -43,10 +43,7 @@ class _HomePageState extends State<HomePage> {
 
               for (var x in data.children) {
                 ModalNote N1 = ModalNote(
-                  task: x
-                      .child("task")
-                      .value
-                      .toString(),
+                  task: x.child("task").value.toString(),
                   key: x.key,
                 );
                 l1.add(N1);
@@ -55,7 +52,17 @@ class _HomePageState extends State<HomePage> {
                   itemCount: l1.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: GLR.Tick(),
+                      leading: IconButton(
+                        onPressed: () {
+                          isclick
+                              ? Icon(
+                                  Icons.check_circle_outline,
+                                  color: Colors.green,
+                                )
+                              : Icon(Icons.check_circle);
+                        },
+                        icon: Icon(Icons.check_circle_outline),
+                      ),
                       title: Text("${l1[index].task}"),
                       trailing: SizedBox(
                         width: 100,
@@ -130,29 +137,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // void Tick() {
-  //   IconButton(onPressed: () {
-  //
-  //   }, icon: Icon(Icons.check_circle_outline),);
-  // }
+//
+// void tick() async {
+//   isclick ? Icon(Icons.check_circle_outline,color: Colors.green,) : Icon(Icons.check_circle);
+// }
 
-  // void Tick() async {
-  //   if (isclick == false) {
-  //     setState(() {
-  //       isclick = true;
-  //       iconcl = Icon(
-  //         Icons.check_circle_outline,
-  //         size: 50,
-  //       );
-  //     });
-  //   } else {
-  //     setState(() {
-  //       isclick = false;
-  //       iconcl = Icon(
-  //         Icons.check_circle,
-  //         size: 50,
-  //       );
-  //     });
-  //   }
-  // }
+// if (isclick == false) {
+//   setState(() {
+//     isclick = true;
+//     iconcl = Icon(
+//       Icons.check_circle_outline,
+//       size: 50,
+//     );
+//   });
+// } else {
+//   setState(() {
+//     isclick = false;
+//     iconcl = Icon(
+//       Icons.check_circle,
+//       size: 50,
+//     );
+//   });
+// }
+//}https://github.com/KrinalNakarani
 }

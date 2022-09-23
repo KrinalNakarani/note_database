@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void splash() {
     Timer(Duration(seconds: 3), () {
-      Get.to(HomePage());
+      Get.off(HomePage());
     });
   }
 }
