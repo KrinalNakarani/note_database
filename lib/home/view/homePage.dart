@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
             } else if (snapshot.hasData) {
               print("====================${snapshot.data.snapshot}");
 
-              List l1 = [];
+              List l1 = [""];
               DataSnapshot data = snapshot.data.snapshot;
 
               for (var x in data.children) {
