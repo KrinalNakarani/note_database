@@ -20,21 +20,17 @@ class Gcantroller extends GetxController {
     return FDBref.child("Task").onValue;
   }
 
-  void Delete(String? key) {
+  void Delete(String key) {
     var firebaseDatabase = FirebaseDatabase.instance;
     var FDBref = firebaseDatabase.ref();
-    FDBref.child("Task").child(key!).remove();
+    FDBref.child("Task").child(key).remove();
   }
 
-  Future<Icon> tick() async {
-    bool isclick = false;
-    var abc = isclick ? Icon(Icons.check_circle) : Icon(Icons.check_circle_outline);
-    return abc;
-  }
+
 }
 
 class ModalNote {
   String? task,key;
 
-  ModalNote({ this.task,this.key});
+  ModalNote({this.task,this.key});
 }
