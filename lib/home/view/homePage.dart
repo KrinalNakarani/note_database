@@ -15,11 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Gcantroller GLR = Get.put(Gcantroller());
-  bool isclick = false;
-  Icon iconcl = Icon(
-    Icons.check_circle_outline,
-    size: 50,
-  );
+
   TextEditingController task = TextEditingController();
 
   @override
@@ -38,13 +34,16 @@ class _HomePageState extends State<HomePage> {
             } else if (snapshot.hasData) {
               print("====================${snapshot.data.snapshot}");
 
-              List l1 = [""];
+              List<ModalNote> l1 = [];
               DataSnapshot data = snapshot.data.snapshot;
 
               for (var x in data.children) {
                 ModalNote N1 = ModalNote(
                   task: x.child("task").value.toString(),
                   key: x.key,
+                  isclick: x.child("isclick").value.toString() == "true"
+                      ? true
+                      : false,
                 );
                 l1.add(N1);
               }
@@ -52,16 +51,14 @@ class _HomePageState extends State<HomePage> {
                   itemCount: l1.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: IconButton(
-                        onPressed: () {
-                          isclick
-                              ? Icon(
-                                  Icons.check_circle_outline,
-                                  color: Colors.green,
-                                )
-                              : Icon(Icons.check_circle);
+                      leading: Checkbox(
+                        value: l1[index].isclick,
+                        onChanged: (value) {
+                          GLR.status(
+                              isclick: value,
+                              key: l1[index].key,
+                              task: l1[index].task);
                         },
-                        icon: Icon(Icons.check_circle_outline),
                       ),
                       title: Text("${l1[index].task}"),
                       trailing: SizedBox(
@@ -82,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                GLR.Delete(l1[index].key);
+                                GLR.Delete(l1[index].key!);
                               },
                               icon: Icon(
                                 Icons.delete,
@@ -127,7 +124,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                GLR.AddData(task: task.text, key: key);
+                GLR.AddData(task: task.text, key: key, isclick: false);
               },
               child: Text("Create"),
             ),
@@ -136,28 +133,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-//
-// void tick() async {
-//   isclick ? Icon(Icons.check_circle_outline,color: Colors.green,) : Icon(Icons.check_circle);
-// }
-
-// if (isclick == false) {
-//   setState(() {
-//     isclick = true;
-//     iconcl = Icon(
-//       Icons.check_circle_outline,
-//       size: 50,
-//     );
-//   });
-// } else {
-//   setState(() {
-//     isclick = false;
-//     iconcl = Icon(
-//       Icons.check_circle,
-//       size: 50,
-//     );
-//   });
-// }
-//}https://github.com/KrinalNakarani
 }
